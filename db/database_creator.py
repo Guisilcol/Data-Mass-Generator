@@ -1,4 +1,4 @@
-#Make sure the "requests" library is installed. https://requests-docs-pt.readthedocs.io/pt_BR/latest/user/quickstart.html
+# Make sure the "requests" library  (2.22.0) is installed. https://requests-docs-pt.readthedocs.io/pt_BR/latest/user/quickstart.html
 
 import os
 import sqlite3
@@ -18,7 +18,7 @@ def main():
         elif option == 's':
             break
 
-    # Make the request to get the table creation script and delete the .db file from the folder
+    # Make the request to get the table creation and insert scripts and delete the .db file from the folder
 
     try:
         response_database_creation_script = requests.get(DATABASE_CREATION_SCRIPT)
@@ -29,16 +29,17 @@ def main():
         print('Error: ' , exception)
         exit()
     
-    # Transforms each statement into an array and executes one by one
+    # Transforms each statement into an element of a array and executes one by one
 
     script = response_database_creation_script.text + response_database_insert_script.text
     script = script.split(';')
     connection = sqlite3.connect(DATABASE_FILE)
     cursor = connection.cursor()
-    script.remove("")
+    
+    while "" in script: 
+        script.remove("")
 
     for statement in script:
-        print(statement + ";")
         cursor.execute(statement + ";")
 
     connection.commit()
