@@ -1,5 +1,3 @@
-# Make sure the "requests" library  (2.22.0) is installed. https://requests-docs-pt.readthedocs.io/pt_BR/latest/user/quickstart.html
-
 import os
 import sqlite3
 import requests
