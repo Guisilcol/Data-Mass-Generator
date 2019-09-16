@@ -1,0 +1,9 @@
+{
+	"$db": "integer_tests",
+	"name": "int.smallint -p",
+	"row": 3,
+
+	"$link": {
+		"o boto aqui?": ["rua", "bairro"]
+	}
+}
