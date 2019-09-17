@@ -6,12 +6,12 @@ class Name(Database):
 
     def name(self) -> str:
         sql = "SELECT name FROM name ORDER BY RANDOM() LIMIT 1;"
-        data = self.getData(sql, DATABASE_PATH)
+        data = self.get_data(sql, DATABASE_PATH)
         return data[0][0]
 
     def surname(self) -> str:
         sql = "SELECT surname FROM surname ORDER BY RANDOM() LIMIT 1;"
-        data = self.getData(sql, DATABASE_PATH)
+        data = self.get_data(sql, DATABASE_PATH)
         return data[0][0]
 
     def name_surname(self) -> str:
