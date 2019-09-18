@@ -6,10 +6,8 @@ class Name(Database):
 	
 	
     def name(self, args*) -> str:
-	
         sql = "SELECT name FROM name ORDER BY RANDOM() LIMIT 1;"
         data = self.get_data(sql, DATABASE_PATH)
-        
 		return data[0][0]
 	
 	
