@@ -3,9 +3,9 @@ import json
 from pydoc import locate
 
 
-def call_controller(namespace):
-    # folder.file.generate()
-    instance = locate(namespace + 'generate')
+def call_controller(namespace: str):
+    # controller_folder.type_folder.file.generate()
+    instance = locate('controller.' + namespace + '.generate')
     if instance is None:
         print("Error: namespace {0} not found".format(namespace))
         exit(1)

@@ -1,10 +1,10 @@
-from integer._intgen import IntGen
+from generator.intgen import IntGen
 
 
-# TODO: add flag to prevent how_many of being greater than max amount of numbers of smallint, may use abs(min) - max to get the range of total numbers availiables
+# TODO: add flag to prevent how_many of being greater than max amount of numbers of smallint, may use abs(min) - max + 1 to get the range of total numbers availiables
 # of course, the flag will only work if is_primary is true since in the situation is not possible to all entrys be unique
 
-# TODO: treat auto increment
+# TODO: handle auto increment
 
 class IntController:
     is_primary: bool
@@ -14,7 +14,8 @@ class IntController:
         self.how_many = rows
         self.is_primary = is_primary
         self.fields = []
-
+	
+	
     def gen(self):
         i = 0
         while i < self.how_many:

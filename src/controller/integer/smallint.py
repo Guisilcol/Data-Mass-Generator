@@ -1,5 +1,5 @@
-from controller.intcontroller import IntController
-from integer.inttype import SMALLINT
+from controller.integer._intcontroller import IntController
+from utils.inttype import SMALLINT
 
 
 def generate(): # TODO: pass the arguments to controller
