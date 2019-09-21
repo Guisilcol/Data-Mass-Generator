@@ -2,7 +2,7 @@ from controller.integer._intcontroller import IntController
 from utils.inttype import BIGINT
 
 
-def generate(): # TODO: pass the arguments to controller
-    controller = IntController(BIGINT, False, 1)
+def generate(how_many: int, args: list):
+    controller = IntController(BIGINT, how_many, args)
     return controller.gen()
 

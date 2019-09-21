@@ -3,14 +3,18 @@ import json
 from pydoc import locate
 
 
-def call_controller(namespace: str):
+def call_controller(namespace: str, row_count: int, args: list):
     # controller_folder.type_folder.file.generate()
-    instance = locate('controller.' + namespace + '.generate')
+    instance = locate(f"controller.{namespace}.generate")
     if instance is None:
-        print("Error: namespace {0} not found".format(namespace))
+        print(f"Error: namespace {namespace} not found")
         exit(1)
     # TODO: do something...
-    print(instance())
+    try:
+        print(instance(row_count, args))
+    except Exception as e:
+        print(e)
+        exit(1)
 
 
 def load_json(file):
@@ -37,8 +41,13 @@ def main():
     # mandar sub param ("name": "ns.c -args") para o controller do namespace
     #   junto com args globais
 
+    # from argparse import ArgumentParser
+    # sys.argv = params['name'].strip().split(' ')
+    # sys.argv.insert(0, ".") # since the 1st arg is the filename argparse ignores it
+
     # TODO: pass args too
-    call_controller('integer.smallint')
+    local_param = params['name'].strip().split(' ')
+    call_controller(local_param[0], 237, local_param[1:])
 
 
 if __name__ == "__main__":

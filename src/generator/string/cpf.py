@@ -13,17 +13,3 @@ class CPF():
                 data = value % tuple(data)
 
         return data
-
-
-cpf = CPF()
-
-array = []
-
-start = time.time()
-for i in range(1000000):
-    
-    #array.append(cpf.cpf({'-m': "%c%c%c.%c%c%c.%c%c%c.%c%c"}))
-    #print(cpf.cpf())
-    print(cpf.cpf({'-m': "%c%c%c.%c%c%c.%c%c%c.%c%c"}))
-
-print((time.time() - start) / 60, " minutes")
