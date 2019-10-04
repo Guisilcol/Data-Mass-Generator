@@ -8,7 +8,7 @@ class Database():
         connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         result_set = cursor.execute(sql).fetchall()
-        cursor.close
-        connection.close
+        cursor.close()
+        connection.close()
 
         return result_set

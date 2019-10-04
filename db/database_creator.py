@@ -24,7 +24,7 @@ def main():
         if os.path.exists(DATABASE_FILE):
             os.remove(DATABASE_FILE)
     except Exception as exception: 
-        print('Error: ' , exception)
+        print('Error: ', exception)
         exit()
     
     # Transforms each statement into an element of a array and executes one by one
@@ -41,8 +41,8 @@ def main():
         cursor.execute(statement + ";")
 
     connection.commit()
-    cursor.close
-    connection.close
+    cursor.close()
+    connection.close()
 
 if __name__ == "__main__":
     main()
