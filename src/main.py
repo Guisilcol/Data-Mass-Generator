@@ -1,5 +1,6 @@
 import sys
 import json
+from os import unlink
 from controller._maincontrol import MainControl
 
 
@@ -20,15 +21,24 @@ def main():
         print("Error: no file specified")
         return
 
-    # params = load_json(sys.argv[1])
-    params = load_json("../tests/paramtest.json")
+    params = load_json(sys.argv[1])
+    output_f = open(sys.argv[2], 'w+') if len(sys.argv) > 2 else sys.stdout
 
     try:
-        mc = MainControl()
+        mc = MainControl(output_f)
         mc.init(params)
+        if output_f.name != sys.stdout.name:
+            print(f"Data saved in {output_f.name}.")
     except Exception as e:
         print(e)
+        try:
+            if output_f.name != sys.stdout.name:
+                unlink(output_f.name)
+        except PermissionError:
+            pass
         exit(1)
+    finally:
+        output_f.close()
 
 
 if __name__ == "__main__":

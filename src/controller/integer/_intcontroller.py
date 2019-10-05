@@ -27,6 +27,7 @@ class IntController(ControlBase):
         if '-a' in self.args:
             self.auto_increment = True
             self._has_enough_numbers()
+            self.can_generate = False
             del self.args[self.args.index('-a')]
         if '-p' in self.args:
             self.is_primary = True
@@ -34,18 +35,18 @@ class IntController(ControlBase):
             del self.args[self.args.index('-p')]
 
         if len(self.args) > 0:
-            raise Exception("Error: invalid argument {0}".format(self.args[0]))
+            raise Exception(f"Error: invalid argument {self.args[0]}")
 
     def _gen_random(self):
         i = 0
         while i < self.how_many:
             val = IntGen.generate(self._int_type.min(), self._int_type.max())
-            if not self.is_primary or (self.is_primary and not val in self.rows):
+            if not self.is_primary or (self.is_primary and val not in self.rows):
                 self.rows.append(val)
                 i += 1
 
     @property
-    def type_name(self):  # TODO: check if this is the correct form of write unsined types?
+    def type_name(self):  # TODO: check if this is the correct form of write unsigned types?
         tn = self._int_type.name
         tn += ' UNSIGNED' if self._int_type.is_unsigned else ''
         tn += ' PRIMARY KEY' if self.is_primary else ''
@@ -53,9 +54,5 @@ class IntController(ControlBase):
         return tn
 
     def gen(self):
-        """ Returns a string containing the file path where the values are stored """
-        if self.auto_increment:
-            return  # does nothing since in this case no number need to be generated
-
+        """ Generates the data """
         self._gen_random()
-        self.serialize()

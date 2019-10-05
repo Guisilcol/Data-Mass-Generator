@@ -2,11 +2,11 @@ from pydoc import locate
 
 
 class MainControl:
-    def __init__(self):
+    def __init__(self, file):
         self.db_name = ''
         self.rows_count = 0
         self.controllers = []
-        self.script = ''
+        self.file = file
 
     def init(self, params):
         self.db_name = params.get('$db', False)
@@ -27,32 +27,73 @@ class MainControl:
             args = local_param[1:]
 
             ctrl = self.call_controller(namespace, self.rows_count, args)
-            ctrl.gen()  # maybe move it to somewhere else
             self.controllers.append(ctrl)
 
+        self.generate()
         self.create_table(params)
         self.create_insert(params)
 
+    def generate(self):
+        for ctrl in self.controllers:
+            if ctrl.can_generate:
+                ctrl.gen()
+                ctrl.serialize()
+
     def create_table(self, params):
-        """Create the table creation script"""
-        self.script = f"CREATE TABLE {self.db_name}\n("
+        """ Create the table creation sql script (CREATE TABLE...) """
+        script = f"CREATE TABLE {self.db_name}\n("
         field_names = [i for i in params.keys() if not i.startswith('$')]
 
         for i, item in enumerate(field_names):
-            row_data = self.controllers[i].type_name
-            self.script += f"\t{item} {row_data}"
+            row_data = self.controllers[i].type_name  # ctrls are expected to be in the same order as dict keys
+            script += f"\t{item} {row_data}"
 
             if i != len(field_names) - 1:
-                self.script += ","
+                script += ','
 
-            self.script += "\n"
+            script += "\n"
 
-        self.script += f")\n"
-        # save it into a file since the next method will load a mass of data
+        script += f")\n"
+        self.append(script)
 
     def create_insert(self, params):
-        """Create the values insertion script"""
-        pass
+        """ Add the data to the script (INSERT INTO...) """
+        script = ''
+        field_names = [i for i in params.keys() if not i.startswith('$')]
+
+        # Create the insert header
+        script += f"INSERT INTO {self.db_name} ("
+        for i, item in enumerate(field_names):
+            if not self.controllers[i].can_generate:
+                continue
+            script += item
+
+            if i != len(field_names) - 1:
+                script += ', '
+
+        script += ') VALUES'
+        self.append(script)
+        script = ''
+
+        # Add data
+        i = 0
+        while i < self.rows_count:
+            script += f"\t("
+            for idx, ctrl in enumerate(self.controllers):
+                if not ctrl.can_generate:
+                    continue
+                script += ctrl.dump_line()
+
+                if idx != len(self.controllers) - 1:
+                    script += ', '
+
+            script += ')'
+            self.append(script)
+            script = ''
+            i += 1
+
+    def append(self, text):
+        self.file.write(f"{text}\n")
 
     @classmethod
     def call_controller(cls, namespace: str, row_count: int, args: list):
