@@ -11,6 +11,8 @@ class IntController(ControlBase):
         self.args = args
         self.is_primary = False
         self.auto_increment = False
+        self.min_val = None
+        self.max_val = None
         self._parse_args()
 
     def _has_enough_numbers(self):
@@ -34,6 +36,27 @@ class IntController(ControlBase):
             self._has_enough_numbers()
             del self.args[self.args.index('-p')]
 
+        for current_arg in self.args:
+            import re
+            cmd = current_arg[:2]
+            cmd_args = current_arg[2:]
+
+            if '-r' == cmd:
+                if not re.match(r"-?\d+:-?\d+", cmd_args):
+                    raise Exception(f"Error: bad formatted parameters '{cmd_args}' from {cmd} argument")
+
+            num1, num2 = cmd_args.split(':')
+            num1, num2 = int(num1), int(num2)
+            #  This should be executed after -u since -u will change the range
+            if self._int_type.is_out_of_bounds(num1):
+                raise Exception(f"Error: the first parameter from {cmd}, '{num1} is out of the bounds from '{self._int_type.name}'")
+            elif self._int_type.is_out_of_bounds(num2):
+                raise Exception(f"Error: the first parameter from {cmd}, '{num2} is out of the bounds from '{self._int_type.name}'")
+
+            self.min_val = num1
+            self.max_val = num2
+            del self.args[self.args.index(current_arg)]
+
         if len(self.args) > 0:
             raise Exception(f"Error: invalid argument {self.args[0]}")
 
@@ -41,7 +64,9 @@ class IntController(ControlBase):
 
     def _gen_random(self):
         while len(self.rows) < self.how_many:
-            val = IntGen.generate(self._int_type.min(), self._int_type.max())
+            min = self.min_val or self._int_type.min()
+            max = self.max_val or self._int_type.max()
+            val = IntGen.generate(min, max)
             self.rows.add(val)
 
     @property

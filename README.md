@@ -5,4 +5,4 @@ int args:
 ``-p``: primary key  
 ``-a``: auto increment  
 ``-u``: unsigned  
-
+``-r<number>:<number>``: range where <number> must be replaced with an number

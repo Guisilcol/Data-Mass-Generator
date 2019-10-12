@@ -1,8 +1,8 @@
 {
 	"$db": "integer_tests",
 	"name": "integer.tinyint -u -p",
-	"name2": "integer.int -p",
-	"$row": 3,
+	"name2": "integer.int -p -r-10:20",
+	"$rows": 3,
 
 	"$link": {
 		"o boto aqui?": ["rua", "bairro"]
