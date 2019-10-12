@@ -3,4 +3,4 @@ from utils.inttype import INT
 
 
 def generate(how_many: int, args: list):
-    return IntController(INT, how_many, args)
+    return IntController(INT.copy(), how_many, args)

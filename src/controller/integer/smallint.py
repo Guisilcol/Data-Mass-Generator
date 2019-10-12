@@ -3,4 +3,4 @@ from utils.inttype import SMALLINT
 
 
 def generate(how_many: int, args: list):
-    return IntController(SMALLINT, how_many, args)
+    return IntController(SMALLINT.copy(), how_many, args)
