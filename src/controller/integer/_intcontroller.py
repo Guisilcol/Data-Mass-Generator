@@ -45,17 +45,17 @@ class IntController(ControlBase):
                 if not re.match(r"-?\d+:-?\d+", cmd_args):
                     raise Exception(f"Error: bad formatted parameters '{cmd_args}' from {cmd} argument")
 
-            num1, num2 = cmd_args.split(':')
-            num1, num2 = int(num1), int(num2)
-            #  This should be executed after -u since -u will change the range
-            if self._int_type.is_out_of_bounds(num1):
-                raise Exception(f"Error: the first parameter from {cmd}, '{num1} is out of the bounds from '{self._int_type.name}'")
-            elif self._int_type.is_out_of_bounds(num2):
-                raise Exception(f"Error: the first parameter from {cmd}, '{num2} is out of the bounds from '{self._int_type.name}'")
+                num1, num2 = cmd_args.split(':')
+                num1, num2 = int(num1), int(num2)
+                #  This should be executed after -u since -u will change the range
+                if self._int_type.is_out_of_bounds(num1):
+                    raise Exception(f"Error: the first parameter from {cmd}, '{num1} is out of the bounds from '{self._int_type.name}'")
+                elif self._int_type.is_out_of_bounds(num2):
+                    raise Exception(f"Error: the first parameter from {cmd}, '{num2} is out of the bounds from '{self._int_type.name}'")
 
-            self.min_val = num1
-            self.max_val = num2
-            del self.args[self.args.index(current_arg)]
+                self.min_val = num1
+                self.max_val = num2
+                del self.args[self.args.index(current_arg)]
 
         if len(self.args) > 0:
             raise Exception(f"Error: invalid argument {self.args[0]}")
