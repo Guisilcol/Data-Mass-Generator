@@ -37,13 +37,12 @@ class IntController(ControlBase):
         if len(self.args) > 0:
             raise Exception(f"Error: invalid argument {self.args[0]}")
 
+        self.list_is_unique = self.is_primary
+
     def _gen_random(self):
-        i = 0
-        while i < self.how_many:
+        while len(self.rows) < self.how_many:
             val = IntGen.generate(self._int_type.min(), self._int_type.max())
-            if not self.is_primary or (self.is_primary and val not in self.rows):
-                self.rows.append(val)
-                i += 1
+            self.rows.add(val)
 
     @property
     def type_name(self):  # TODO: check if this is the correct form of write unsigned types?

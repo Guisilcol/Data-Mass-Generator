@@ -3,5 +3,5 @@ from utils.inttype import TINYINT
 
 
 def generate(how_many: int, args: list):
-    return IntController(TINYINT, how_many, args)
+    return IntController(TINYINT.copy(), how_many, args)
 

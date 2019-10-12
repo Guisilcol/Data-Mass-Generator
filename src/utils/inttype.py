@@ -21,12 +21,12 @@ class IntType:
     def available_numbers(self):
         return abs(self.min()) + self.max() + 1  # 1 since zero is included
 
+    def copy(self):
+        from copy import copy
+        return copy(self)
+
     def is_out_of_bounds(self, number):
         return number < self.min() or number > self.max()
-
-
-def get_integer_type(int_type):  # not used
-    return globals()[int_type.upper()]
 
 
 TINYINT = IntType(-128, 127, 0, 255, 'TINYINT')
