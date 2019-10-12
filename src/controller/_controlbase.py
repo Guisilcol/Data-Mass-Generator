@@ -1,20 +1,25 @@
 # Base class from generators, it saves the chunks of data into files
 from tempfile import NamedTemporaryFile
 from abc import ABCMeta, abstractmethod
+from utils.aslist import ASList
 
 
 class ControlBase(metaclass=ABCMeta):
     def __init__(self):
         super().__init__()
-        self.rows = []
+        self.rows = None
         self.can_generate = True
         self._temp_file = NamedTemporaryFile('r+', delete=False)
+        self.list_is_unique = True
 
     def __del__(self):
         import os
         if not self._temp_file.closed:
             self._temp_file.close()
         os.unlink(self._temp_file.name)
+
+    def init_list(self):
+        self.rows = ASList(unique=self.list_is_unique)
 
     @property
     @abstractmethod

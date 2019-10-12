@@ -36,12 +36,13 @@ class MainControl:
     def generate(self):
         for ctrl in self.controllers:
             if ctrl.can_generate:
+                ctrl.init_list()
                 ctrl.gen()
                 ctrl.serialize()
 
     def create_table(self, params):
         """ Create the table creation sql script (CREATE TABLE...) """
-        script = f"CREATE TABLE {self.db_name}\n("
+        script = f"CREATE TABLE {self.db_name}\n(\n"
         field_names = [i for i in params.keys() if not i.startswith('$')]
 
         for i, item in enumerate(field_names):
